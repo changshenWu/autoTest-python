@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import org.openqa.selenium.WebElement;
 
-
 import util.parse.DomParseXml;
 import io.appium.java_client.NetworkConnectionSetting;
 import io.appium.java_client.android.AndroidDriver;

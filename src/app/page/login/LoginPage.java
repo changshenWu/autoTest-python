@@ -1,8 +1,7 @@
 package app.page.login;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.WebElement;
-
 import app.page.BasePage;
 
 /**
@@ -10,16 +9,16 @@ import app.page.BasePage;
  * 1.登录；2.打开快捷登录页;3.打开忘记密码页
  * @param <T>
  * */
-public class LoginPage<WebElement> extends BasePage {
+public class LoginPage extends BasePage {
 	
 	private String nameEditId = "";
 	private String pwdEditId = "";
 	private String loginBtnId = "";
 	private String quickLoginTextId = "";
 	private String forgetPwdTextId = "";
-   
-	public LoginPage(AppiumDriver<WebElement> appiumDriver) {
-		this.driver = appiumDriver;
+    
+	public LoginPage (AndroidDriver<WebElement> driver) {
+		this.driver = driver;
 	}
 	
 	/**
@@ -37,7 +36,7 @@ public class LoginPage<WebElement> extends BasePage {
 	 * */
 	public QuickLoginPage openQuickLoginPage () {
 		click(1,quickLoginTextId);
-		return new QuickLoginPage(appiumDriver);
+		return new QuickLoginPage(driver);
 	}
 	
 	/**
@@ -46,7 +45,7 @@ public class LoginPage<WebElement> extends BasePage {
 	 * */
 	public ForgetPwdLoginPage openForgetPwdLoginPage() {
 		click(1,forgetPwdTextId);
-		return new ForgetPwdLoginPage(appiumDriver);
+		return new ForgetPwdLoginPage(driver);
 	}
 	
 

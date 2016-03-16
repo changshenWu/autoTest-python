@@ -1,6 +1,5 @@
 package app.test;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 
 import java.net.MalformedURLException;
@@ -20,7 +19,7 @@ import config.DeviceConfig;
 
 public class AppCaseTest {
 
-	public AppiumDriver<WebElement> driver;
+	public AndroidDriver<WebElement> driver;
 
 	@BeforeMethod(alwaysRun=true)
 	public void setup() throws MalformedURLException { 
