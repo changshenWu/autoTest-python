@@ -11,11 +11,25 @@ public class DumpsysCommond implements IAdbCommand {
 	@Override
 	public void run(String args) {
 		if (args.equals("mem")) {
-			acr.runDumpsysMemInfo();
+			acr.runDumpMemInfo();
 		} else if(args.equals("cpu")) {
-			acr.runDumpsysCpuInfo();
+			acr.runDumpCpuInfo();
+		} else if (args.equals("package")) {
+			acr.runDumpPackage();
+		} else if (args.equals("dropbox")) {
+			acr.runDumpDropbox();
+		} else if (args.equals("surface")) {
+			acr.runDumpSurfaceFlinger();
+		} else if(args.equals("phone")) {
+			acr.runDumpPhone();
+		} else if(args.equals("wifi")) {
+			acr.runDumpWifi();
+		} else if (args.equals("window")) {
+			acr.runDumpWindow();
+		} else if (args.equals("conn")) {
+			acr.runDumpConnectivity();
 		}
-		
+
 	}
 
 }
