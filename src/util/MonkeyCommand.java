@@ -9,7 +9,9 @@ public class MonkeyCommand implements IAdbCommand {
 
 	@Override
 	public void run(String args) {
-		acr.runMonkey();
+		if (args.equals("")) {
+			acr.runShellMonkey();
+		}
 	}
 
 }

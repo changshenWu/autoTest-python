@@ -54,48 +54,56 @@ public class AdbCmdRecevier {
 		}
 	}
 
+	private void runShellCmd(String option) {
+		runCmd("adb shell "+option+" ");
+	}
+
+	private void runShellDumpCmd(String args) {
+		runShellCmd(args);
+	}
+
 	public void runDumpMemInfo() {
-		runCmd("adb shell dumpsys meminfo "+packageName);
+		runShellDumpCmd("meminfo "+packageName);
 	}
 
 	public void runDumpCpuInfo() {
-		runCmd("adb shell dumpsys cpuinfo "+packageName);
+		runShellDumpCmd("cpuinfo "+packageName);
 	}
 
 	public void runDumpActivity() {
-		runCmd("adb shell dumpsys activity "+packageName);
+		runShellDumpCmd("activity "+packageName);
 	}
 
 	public void runDumpSurfaceFlinger() {
-		runCmd("adb shell dumpsys SurfaceFlinger");
+		runShellDumpCmd("SurfaceFlinger");
 	}
 
 	public void runDumpPackage() {
-		runCmd("adb shell dumpsys package");
+		runShellDumpCmd("package");
 	}
 
 	public void runDumpDropbox() {
-		runCmd("adb shell dumpsys dropbox "+packageName);
+		runShellDumpCmd("dropbox "+packageName);
 	}
 
 	public void runDumpPhone() {
-		runCmd("adb shell dumpsys phone");
+		runShellDumpCmd("phone");
 	}
 
 	public void runDumpWifi() {
-		runCmd("adb shell dumpsys wifi");
+		runShellDumpCmd("wifi");
 	}
 
 	public void runDumpBluetooth() {
-		runCmd("adb shell dumpsys bluetooth");
+		runShellDumpCmd("bluetooth");
 	}
 
 	public void runDumpWindow() {
-		runCmd("adb shell dumpsys window " +packageName);
+		runShellDumpCmd("window " +packageName);
 	}
 
 	public void runDumpConnectivity() {
-		runCmd("adb shell dumpsys connectivity");
+		runShellDumpCmd("connectivity");
 	}
 
 	/*
@@ -122,36 +130,102 @@ public class AdbCmdRecevier {
 	 * -v 设定输出信息的详细级别，1个 -v 表示级别为1，2个 -v 表示级别为2
 	 * --throttle 设定事件之间的延时，单位为毫秒
 	 * [--profile-wait MILLISEC]
-     * [--device-sleep-time MILLISEC]
-     * [--randomize-script]
-     * [--script-log]
-     * [--bugreport]
-     * [--periodic-bugreport]
-     * [--kill-process-after-error]
-     * [--pkg-blacklist-file PACKAGE_BLACKLIST_FILE]
-     * [--pkg-whitelist-file PACKAGE_WHITELIST_FILE]
-     * [--wait-dbg]
-     * [--dbg-no-events]
-     * [--setup scriptfile]
-     * [-f scriptfile [-f scriptfile] ...]
-     * [--port port]
+	 * [--device-sleep-time MILLISEC]
+	 * [--randomize-script]
+	 * [--script-log]
+	 * [--bugreport]
+	 * [--periodic-bugreport]
+	 * [--kill-process-after-error]
+	 * [--pkg-blacklist-file PACKAGE_BLACKLIST_FILE]
+	 * [--pkg-whitelist-file PACKAGE_WHITELIST_FILE]
+	 * [--wait-dbg]
+	 * [--dbg-no-events]
+	 * [--setup scriptfile]
+	 * [-f scriptfile [-f scriptfile] ...]
+	 * [--port port]
 	 * COUNT 事件数目
 	 * 例如：adb shell monkey -p cn.xyb100.xyb -v 500
 	 * */
-	public void runMonkey() {
-		String[] monkeyCmdIgnoreArgs = {"--ignore-crashes","--ignore-timeouts",
-				"--ignore-security-exceptions","--ignore-native-crashes"};
-		String[] monkeyCmdPctArgs = {"--pct-touch","--pct-motion","--pct-trackball",
-				"--pct-syskeys","--pct-pinchzoom","--pct-nav","--pct-majornav",
-				"pct-anyevent","pct-appswitch"};
-		String[] otherArgsStrings = {"-p "+packageName};
-		runCmd("adb shell monkey");
+	public void runShellMonkey() {
+		String[] monkeyCmdIgnoreOption = {" --ignore-crashes"," --ignore-timeouts",
+				" --ignore-security-exceptions"," --ignore-native-crashes"};
+		String[] monkeyCmdPctOption = {" --pct-touch 40"," --pct-motion 20"," --pct-trackball 10",
+				" --pct-syskeys 5"," --pct-pinchzoom 0"," --pct-nav 0"," --pct-majornav 0",
+				" --pct-anyevent 0"," --pct-appswitch 25"};
+		String[] otherArgsOption = {" -p "+packageName +" --throttle 200 -s 100"};
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("monkey ");
+		for (String string : otherArgsOption) {
+			sb.append(string);
+		}
+		for (String string : monkeyCmdIgnoreOption) {
+			sb.append(string);
+		}
+		for (String string : monkeyCmdPctOption ) {
+			sb.append(string);
+		}
+		runShellCmd(sb.append(" 1000 ").toString());
 	}
-	
-	public void runPm() {
+
+	private void runShellPm(String args) {
+		runShellCmd("pm "+args);
 	}
-	
+
+	public void runPmClear() {
+		runShellPm("clear "+packageName);
+	}
+
+	public void runPmListPackage() {
+		String[] optionArgs = {"-s","-3","-f","-i"+packageName};
+		runShellPm("list package -3 -f -i xyb100");
+	}
+
+	public void runPmPath() {
+		runShellPm("path "+packageName);
+	}
+
+	public void runPmGrant() {
+		runShellPm("grant "+packageName+" ");
+	}
+
+	public void runPmDump() {
+		runShellPm("dump "+packageName);
+	}
+
+	public void runPmGetInstallLocation() {
+		/*
+		 *[0/auto]：默认为自动
+		 *[1/internal]：默认为安装在手机内部
+		 *[2/external]：默认安装在外部存储
+		 **/
+		runShellPm("get-install-location "+packageName);
+	}
+
+	public void runPmSetInstallLocation() {
+		int location[] = {0,1,2};
+		runShellPm("set-install-location "+location[0] +packageName);
+	}
+
+	public void runPmUninstall() {
+		runShellPm("uninstall "+packageName);
+	}
+
+	public void runPmInstall() {
+		/*
+		 *目标 apk 存放于 PC 端，请用 adb install 安装
+		 *目标 apk 存放于 Android 设备上，请用 pm install 安装
+		 * */
+		String path = null;
+		runShellPm("install "+path);
+	}
+
+	public void runPmListInstrutation() {
+		runShellPm("instrumentation");
+	}
+
 	public void runAm() {
+		runShellCmd("am");
 	}
 
 }
