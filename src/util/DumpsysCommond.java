@@ -1,35 +1,36 @@
 package util;
 
+import util.CmdOptionsConst.Dump;
+
 public class DumpsysCommond implements IAdbCommand {
 
 	private AdbCmdRecevier acr = null;
 
-	public DumpsysCommond(AdbCmdRecevier acr) {
-		this.acr = acr;
+	public DumpsysCommond() {
+		this.acr = new AdbCmdRecevier();
 	}
 
 	@Override
 	public void run(String args) {
-		if (args.equals("mem")) {
+		if (Dump.MEM.equals(args)) {
 			acr.runDumpMemInfo();
-		} else if(args.equals("cpu")) {
+		} else if(Dump.CPU.equals(args)) {
 			acr.runDumpCpuInfo();
-		} else if (args.equals("package")) {
+		} else if (Dump.PACKAGE.equals(args)) {
 			acr.runDumpPackage();
-		} else if (args.equals("dropbox")) {
+		} else if (Dump.DROPBOX.equals(args)) {
 			acr.runDumpDropbox();
-		} else if (args.equals("surface")) {
+		} else if (Dump.SURFACE.equals(args)) {
 			acr.runDumpSurfaceFlinger();
-		} else if(args.equals("phone")) {
+		} else if(Dump.PHONE.equals(args)) {
 			acr.runDumpPhone();
-		} else if(args.equals("wifi")) {
+		} else if(Dump.WIFI.equals(args)) {
 			acr.runDumpWifi();
-		} else if (args.equals("window")) {
+		} else if (Dump.WINDOW.equals(args)) {
 			acr.runDumpWindow();
-		} else if (args.equals("conn")) {
+		} else if (Dump.CONN.equals(args)) {
 			acr.runDumpConnectivity();
 		}
-
 	}
 
 }

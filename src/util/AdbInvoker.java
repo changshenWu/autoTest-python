@@ -12,10 +12,4 @@ public class AdbInvoker {
 		adbCommand.run(args);
 	}
 	
-	public  static void main(String[] args) {
-		AdbInvoker invoker = new AdbInvoker();
-		AdbCmdRecevier acr = new AdbCmdRecevier();
-		invoker.setAdbCommand(new MonkeyCommand(acr));
-		invoker.runCommand("");
-	}
 }

@@ -1,26 +1,33 @@
 package util;
 
+import util.CmdOptionsConst.Pm;
+
 public class PmCommand implements IAdbCommand {
 
 	private AdbCmdRecevier acr;
 
-	public PmCommand(AdbCmdRecevier acr) {
-		super();
-		this.acr = acr;
+	public PmCommand() {
+		this.acr = new AdbCmdRecevier();
 	}
 
 	@Override
 	public void run(String option) {
-		if (("clear").equals(option)) {
+		if (Pm.CLEAR.equals(option)) {
 			acr.runPmClear();
-		} else if(("list package").equals(option)) {
+		} else if(Pm.PACKAGE.equals(option)) {
 			acr.runPmListPackage();
-		} else if (("dump").equals(option)) {
+		} else if(Pm.DUMP.equals(option)) {
 			acr.runPmDump();
-		} else if (("get-install-location").equals(option)) {
+		} else if(Pm.GET_INSTALL_LOC.equals(option)) {
 			acr.runPmGetInstallLocation();
-		} else if(("path").equals(option)) {
+		} else if(Pm.PATH.equals(option)) {
 			acr.runPmPath();
+		} else if(Pm.INSTRMENTATION.equals(option)) {
+			acr.runPmListInstrumentation();
+		} else if(Pm.PERMISSION.equals(option)) {
+			acr.runPmListPermissions();
+		} else if(Pm.USER.equals(option)) {
+			acr.runPmListUsers();
 		}
 	}
 

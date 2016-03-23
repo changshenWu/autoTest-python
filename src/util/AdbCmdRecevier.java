@@ -177,8 +177,16 @@ public class AdbCmdRecevier {
 	}
 
 	public void runPmListPackage() {
-		String[] optionArgs = {"-s","-3","-f","-i"+packageName};
+		//String[] optionArgs = {"-s","-3","-f","-i"+packageName};
 		runShellPm("list package -3 -f -i xyb100");
+	}
+
+	public void runPmListUsers() {
+		runShellPm("list users");
+	}
+
+	public void runPmListPermissions() {
+		runShellPm("list permissions -f ");
 	}
 
 	public void runPmPath() {
@@ -220,12 +228,31 @@ public class AdbCmdRecevier {
 		runShellPm("install "+path);
 	}
 
-	public void runPmListInstrutation() {
+	public void runPmListInstrumentation() {
 		runShellPm("instrumentation");
 	}
 
-	public void runAm() {
-		runShellCmd("am");
+	private void runShellAm(String args) {
+		//adb shell am start -n 包名/包名＋类名（-n 类名,-a action,-d date,-m MIME-TYPE,-c category,-e 扩展数
+		runShellCmd("am "+args);
 	}
 
+	public void runAmStop() {
+		runShellAm("force-stop "+packageName);
+	}
+
+	public void runAmStartPhone() {
+		//-a表示动作，-d表述传入的数据，还有-t表示传入的类型
+		String phoneNumber = "18825264599";
+		runShellAm("start -a android.intent.action.CALL -d tel:"+phoneNumber);
+	}
+
+	public void runAmStartWebView() {
+		String url =  "http://www.baidu.com";
+		runShellAm("start -a android.intent.action.VIEW -d "+url);
+	}
+
+	public void runReboot() {
+		runCmd("reboot");
+	}
 }
