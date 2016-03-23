@@ -9,6 +9,8 @@ public class AdbCommand implements IAdbCommand {
 		AdbCmdRecevier acr = new AdbCmdRecevier();
 		if (Adb.REBOOT.equals(args)) {
 			acr.runReboot();
+		} else if (Adb.SCREENCAP.equals(args)) {
+			acr.runScreencap();
 		}
 	}
 

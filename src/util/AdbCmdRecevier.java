@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AdbCmdRecevier {
 
@@ -58,54 +60,61 @@ public class AdbCmdRecevier {
 		runCmd("adb shell "+option+" ");
 	}
 
-	private void runShellDumpCmd(String args) {
-		runShellCmd(args);
+	private void runShellDumpsysCmd(String args) {
+		runShellCmd("dumpsys "+args);
 	}
 
 	public void runDumpMemInfo() {
-		runShellDumpCmd("meminfo "+packageName);
+		runShellDumpsysCmd("meminfo "+packageName);
 	}
 
 	public void runDumpCpuInfo() {
-		runShellDumpCmd("cpuinfo "+packageName);
+		runShellDumpsysCmd("cpuinfo "+packageName);
 	}
 
 	public void runDumpActivity() {
-		runShellDumpCmd("activity "+packageName);
+		runShellDumpsysCmd("activity "+packageName);
 	}
 
 	public void runDumpSurfaceFlinger() {
-		runShellDumpCmd("SurfaceFlinger");
+		runShellDumpsysCmd("SurfaceFlinger");
 	}
 
 	public void runDumpPackage() {
-		runShellDumpCmd("package");
+		runShellDumpsysCmd("package");
 	}
 
 	public void runDumpDropbox() {
-		runShellDumpCmd("dropbox "+packageName);
+		runShellDumpsysCmd("dropbox "+packageName);
 	}
 
 	public void runDumpPhone() {
-		runShellDumpCmd("phone");
+		runShellDumpsysCmd("phone");
 	}
 
 	public void runDumpWifi() {
-		runShellDumpCmd("wifi");
+		runShellDumpsysCmd("wifi");
 	}
 
 	public void runDumpBluetooth() {
-		runShellDumpCmd("bluetooth");
+		runShellDumpsysCmd("bluetooth");
 	}
 
 	public void runDumpWindow() {
-		runShellDumpCmd("window " +packageName);
+		runShellDumpsysCmd("window " +packageName);
 	}
 
 	public void runDumpConnectivity() {
-		runShellDumpCmd("connectivity");
+		runShellDumpsysCmd("connectivity");
 	}
 
+	public void runDumpPower() {
+		runShellDumpsysCmd("power");
+	}
+
+	public void  runDumpBattery() {
+		runShellDumpsysCmd("battery");
+	}
 	/*
 	 * adb shell monkey命令
 	 * -p 允许的包名列表，可同时指定多个包名，每个包都需要使用“-p”参数指定
@@ -165,7 +174,7 @@ public class AdbCmdRecevier {
 		for (String string : monkeyCmdPctOption ) {
 			sb.append(string);
 		}
-		runShellCmd(sb.append(" 1000 ").toString());
+		runShellCmd(sb.append(" 10000 ").toString());
 	}
 
 	private void runShellPm(String args) {
@@ -243,7 +252,7 @@ public class AdbCmdRecevier {
 
 	public void runAmStartPhone() {
 		//-a表示动作，-d表述传入的数据，还有-t表示传入的类型
-		String phoneNumber = "18825264599";
+		String phoneNumber = "10086";
 		runShellAm("start -a android.intent.action.CALL -d tel:"+phoneNumber);
 	}
 
@@ -253,6 +262,20 @@ public class AdbCmdRecevier {
 	}
 
 	public void runReboot() {
-		runCmd("reboot");
+		runCmd("adb reboot");
 	}
+
+	public void runScreencap() {
+		//app截图
+		String pngName = (new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())+".png";
+		//推送到电脑上指定目录
+		runShellCmd("screencap -p /sdcard/"+pngName);
+		runCmd("adb pull /sdcard/"+pngName+ " d:\\");
+	}
+
+	public void runInstall() {
+		String apkPath = "testPath";
+		runCmd("adb install "+apkPath);
+	}
+
 }

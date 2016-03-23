@@ -23,7 +23,7 @@ public class CmdOptionsConst {
 		public static final String INSTRMENTATION = "instrumentation";
 	}
 	
-	public class Dump {
+	public class Dumpsys {
 		public static final String MEM = "meminfo";
 		public static final String CPU = "cpu";
 		public static final String SURFACE = "surface";
@@ -35,10 +35,13 @@ public class CmdOptionsConst {
 		public static final String DROPBOX = "dropbox";
 		public static final String BLUETOOTH = "bluetooth";
 		public static final String ACTIVITY = "activity";
+		public static final String POWER = "power";
+		public static final String BATTERY = "battery";
 	}
 
 	public class Adb {
 		public static final String REBOOT = "reboot";
+		public static final String SCREENCAP ="screencap";
 	}
 
 }
