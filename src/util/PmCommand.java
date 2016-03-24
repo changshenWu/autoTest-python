@@ -1,17 +1,16 @@
 package util;
 
+import java.io.File;
+
 import util.CmdOptionsConst.Pm;
 
 public class PmCommand implements IAdbCommand {
 
-	private AdbCmdRecevier acr;
-
-	public PmCommand() {
-		this.acr = new AdbCmdRecevier();
-	}
+	private AdbCmdRecevier acr = null;
 
 	@Override
 	public void run(String option) {
+		acr = new AdbCmdRecevier();
 		if (Pm.CLEAR.equals(option)) {
 			acr.runPmClear();
 		} else if(Pm.PACKAGE.equals(option)) {
@@ -31,4 +30,13 @@ public class PmCommand implements IAdbCommand {
 		}
 	}
 
+	@Override
+	public File getCmdResultFile() {
+		if (acr != null) {
+			return acr.getCmdResultFile();
+		} else {
+			Logger.log("尚未执行相关命令!");
+			return null;
+		}
+	}
 }

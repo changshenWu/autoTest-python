@@ -2,6 +2,8 @@ package util;
 
 public class CmdOptionsConst {
 
+	public static final String TEST_PACKAGENAME = "cn.xyb100.xyb";
+
 	public class Am {
 		public static final String STOP = "stop";
 		public static final String TEL = "tel";
@@ -22,7 +24,7 @@ public class CmdOptionsConst {
 		public static final String UNINSTALL = "install";
 		public static final String INSTRMENTATION = "instrumentation";
 	}
-	
+
 	public class Dumpsys {
 		public static final String MEM = "meminfo";
 		public static final String CPU = "cpu";
@@ -42,6 +44,13 @@ public class CmdOptionsConst {
 	public class Adb {
 		public static final String REBOOT = "reboot";
 		public static final String SCREENCAP ="screencap";
+		public static final String CONN = "conn";
+		public static final String REMOUTE = "remoute";
+		public static final String KILL_ALL_PROCESS = "kill";
+	}
+
+	public class Wm {
+		public static final String SIZE = "size";
 	}
 
 }

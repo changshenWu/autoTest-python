@@ -7,9 +7,13 @@ public class AdbInvoker {
 	public void setAdbCommand(IAdbCommand adbCommand) {
 		this.adbCommand = adbCommand;
 	}
-	
+
 	public void runCommand(String args) {
 		adbCommand.run(args);
+	}
+
+	public void getRunCommandResultFile() {
+		adbCommand.getCmdResultFile();
 	}
 	
 }

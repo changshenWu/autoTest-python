@@ -1,17 +1,16 @@
 package util;
 
+import java.io.File;
+
 import util.CmdOptionsConst.Dumpsys;
 
 public class DumpsysCommand implements IAdbCommand {
 
 	private AdbCmdRecevier acr = null;
 
-	public DumpsysCommand() {
-		this.acr = new AdbCmdRecevier();
-	}
-
 	@Override
 	public void run(String args) {
+		this.acr = new AdbCmdRecevier();
 		if (Dumpsys.MEM.equals(args)) {
 			acr.runDumpMemInfo();
 		} else if(Dumpsys.CPU.equals(args)) {
@@ -37,4 +36,12 @@ public class DumpsysCommand implements IAdbCommand {
 		}
 	}
 
+	@Override
+	public File getCmdResultFile() {
+		if (acr != null) {
+			return acr.getCmdResultFile();
+		} else {
+			return null;
+		}
+	}
 }

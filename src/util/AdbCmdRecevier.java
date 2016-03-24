@@ -1,6 +1,10 @@
 package util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,6 +36,8 @@ public class AdbCmdRecevier {
 	 * */
 
 	private String packageName = "cn.xyb100.xyb";
+	private File file;
+	private BufferedWriter bw ;
 
 	private void runCmd(String cmd) {
 		Runtime rt = Runtime.getRuntime();
@@ -43,16 +49,37 @@ public class AdbCmdRecevier {
 				//检查正确的执行结果
 				InputStream is = process.getInputStream();
 				BufferedReader br = new BufferedReader(new InputStreamReader(is));
+				file = new File("./cmdResult.txt");
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				bw = new BufferedWriter(new FileWriter(file));
 				String line = null;
 				while ((line = br.readLine()) != null) {
-					//System.out.print(line);
 					Logger.log(line);
+					bw.write(line);
+					bw.newLine();
 				}
+				bw.flush();
+				bw.close();
+				is.close();
+				br.close();
 				process.destroy();
 				process = null;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 获取命令执行结果文件
+	 * */
+	public File getCmdResultFile() {
+		if (file.length() > 0) {
+			return file;
+		} else {
+			return null;
 		}
 	}
 
@@ -187,7 +214,7 @@ public class AdbCmdRecevier {
 
 	public void runPmListPackage() {
 		//String[] optionArgs = {"-s","-3","-f","-i"+packageName};
-		runShellPm("list package -3 -f -i xyb100");
+		runShellPm("list package -3 -f");
 	}
 
 	public void runPmListUsers() {
@@ -234,7 +261,7 @@ public class AdbCmdRecevier {
 		 *目标 apk 存放于 Android 设备上，请用 pm install 安装
 		 * */
 		String path = null;
-		runShellPm("install "+path);
+		runShellPm("install -r "+path);
 	}
 
 	public void runPmListInstrumentation() {
@@ -247,6 +274,10 @@ public class AdbCmdRecevier {
 	}
 
 	public void runAmStop() {
+		runAmStop(packageName);
+	}
+
+	private void runAmStop(String packageName) {
 		runShellAm("force-stop "+packageName);
 	}
 
@@ -278,4 +309,36 @@ public class AdbCmdRecevier {
 		runCmd("adb install "+apkPath);
 	}
 
+	public void runRemoute() {
+		runCmd("adb remoute");
+	}
+
+	public void runConnect() {
+		String ipAdress = "192.168.1.104";
+		runCmd("adb connect " +ipAdress);
+	}
+
+	private void runWmCmd(String args) {
+		runShellCmd("wm "+args);
+	}
+
+	public void runWmSize() {
+		runWmCmd("size");
+	}
+
+	public void runKillAllProcess() {
+		runPmListPackage();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				if (line.contains("package")) {
+					runAmStop(line.split("=")[1]);
+				}
+			}
+            br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
