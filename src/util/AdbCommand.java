@@ -17,6 +17,8 @@ public class AdbCommand implements IAdbCommand {
 			acr.runScreencap();
 		} else if (Adb.KILL_ALL_PROCESS.equals(args)) {
 			acr.runKillAllProcess();
+		} else if (Adb.BUGREPORT.equals(args)) {
+			acr.runBugReport();
 		}
 	}
 

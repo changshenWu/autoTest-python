@@ -39,6 +39,8 @@ public class CmdOptionsConst {
 		public static final String ACTIVITY = "activity";
 		public static final String POWER = "power";
 		public static final String BATTERY = "battery";
+		public static final String CONTENT = "content";
+		public static final String CURRENT_ACTIVITY = "curr_acti";
 	}
 
 	public class Adb {
@@ -47,10 +49,18 @@ public class CmdOptionsConst {
 		public static final String CONN = "conn";
 		public static final String REMOUTE = "remoute";
 		public static final String KILL_ALL_PROCESS = "kill";
+		public static final String BUGREPORT = "bugreport";
 	}
 
 	public class Wm {
 		public static final String SIZE = "size";
+	}
+
+	public class Input {
+		public static final String SWIPE = "swipe";
+		public static final String TEXT = "text";
+		public static final String TAP = "tap";
+		public static final String KEYEVENT = "keyevent";
 	}
 
 }

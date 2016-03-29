@@ -91,27 +91,55 @@ public class AdbCmdRecevier {
 		runShellCmd("dumpsys "+args);
 	}
 
-	public void runDumpMemInfo() {
+	public void runDumpMemInfo(String packageName) {
 		runShellDumpsysCmd("meminfo "+packageName);
 	}
 
-	public void runDumpCpuInfo() {
+	public void runDumpCpuInfo(String packageName) {
 		runShellDumpsysCmd("cpuinfo "+packageName);
 	}
 
-	public void runDumpActivity() {
-		runShellDumpsysCmd("activity "+packageName);
+	public void runDumpActivity(String packageName) {
+		runShellDumpsysCmd("activity package "+packageName);
+	}
+
+	public void runDumpCurrentActivity() {
+		runShellDumpsysCmd("activity | grep \"mFocusedActivity\"");
 	}
 
 	public void runDumpSurfaceFlinger() {
-		runShellDumpsysCmd("SurfaceFlinger");
+		runShellDumpsysCmd("SurfaceFlinger --latency");
+	}
+
+	public void  runDumpFPS() {
+		runDumpCurrentActivity();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line = null;
+			String currActivity = null;
+			while ((line = br.readLine()) != null) {
+				if (line.contains("mFocusedActivity")) {
+					currActivity = (line.split("/")[1]).split(" ")[0];
+					Logger.log(line);
+				}
+			}
+			br.close();
+			//每隔1000ms查询滑动数
+			//runShellDumpsysCmd("SurfaceFlinger --latency " + currActivity);
+			for (int i = 0; i < 10; i++) {
+				runInputSwipe();
+				runShellDumpsysCmd("SurfaceFlinger --latency " + currActivity);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void runDumpPackage() {
 		runShellDumpsysCmd("package");
 	}
 
-	public void runDumpDropbox() {
+	public void runDumpDropbox(String packageName) {
 		runShellDumpsysCmd("dropbox "+packageName);
 	}
 
@@ -127,7 +155,7 @@ public class AdbCmdRecevier {
 		runShellDumpsysCmd("bluetooth");
 	}
 
-	public void runDumpWindow() {
+	public void runDumpWindow(String packageName) {
 		runShellDumpsysCmd("window " +packageName);
 	}
 
@@ -142,6 +170,11 @@ public class AdbCmdRecevier {
 	public void  runDumpBattery() {
 		runShellDumpsysCmd("battery");
 	}
+
+	public void runDumpContent(String packageName) {
+		runShellDumpsysCmd("content package "+packageName);
+	}
+
 	/*
 	 * adb shell monkey命令
 	 * -p 允许的包名列表，可同时指定多个包名，每个包都需要使用“-p”参数指定
@@ -185,10 +218,10 @@ public class AdbCmdRecevier {
 	public void runShellMonkey() {
 		String[] monkeyCmdIgnoreOption = {" --ignore-crashes"," --ignore-timeouts",
 				" --ignore-security-exceptions"," --ignore-native-crashes"};
-		String[] monkeyCmdPctOption = {" --pct-touch 40"," --pct-motion 20"," --pct-trackball 10",
+		String[] monkeyCmdPctOption = {" --pct-touch 60"," --pct-motion 30"," --pct-trackball 5",
 				" --pct-syskeys 5"," --pct-pinchzoom 0"," --pct-nav 0"," --pct-majornav 0",
-				" --pct-anyevent 0"," --pct-appswitch 25"};
-		String[] otherArgsOption = {" -p "+packageName +" --throttle 200 -s 100"};
+				" --pct-anyevent 0"," --pct-appswitch 0"};
+		String[] otherArgsOption = {" -p "+packageName +" --throttle 200 -v -v -v -s 50"};
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("monkey ");
@@ -336,9 +369,38 @@ public class AdbCmdRecevier {
 					runAmStop(line.split("=")[1]);
 				}
 			}
-            br.close();
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void runBugReport() {
+		runCmd("adb bugreport -d > d:\\bugreport.log");
+	}
+
+	private void  runInputCmd(String parameter) {
+		runShellCmd(" input "+parameter);
+	}
+
+	public void runInputSwipe() {
+		String data = "swipe 100 800 100 100 100";
+		runInputCmd(data);
+	}
+
+	public void runInputText(String text) {
+		runInputCmd("text "+text);
+	}
+
+	public void runInputKeyEvent(String key) {
+		runInputCmd("keyevent "+key);
+	}
+
+	public void runInputKeyEvent(int keyCode) {
+		runInputCmd("keyevent "+keyCode);
+	}
+
+	public void runInputTap(String location) {
+		runInputCmd("tap "+location);
 	}
 }

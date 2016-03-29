@@ -1,5 +1,7 @@
 package util;
 
+import java.io.File;
+
 public class AdbInvoker {
 	
 	public IAdbCommand adbCommand;
@@ -12,8 +14,8 @@ public class AdbInvoker {
 		adbCommand.run(args);
 	}
 
-	public void getRunCommandResultFile() {
-		adbCommand.getCmdResultFile();
+	public File getRunCommandResultFile() {
+		return adbCommand.getCmdResultFile();
 	}
 	
 }
